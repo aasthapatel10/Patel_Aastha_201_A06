@@ -48,7 +48,7 @@ To get full credit for this Question you must:
 
 ## Github Repo Link
 
-[https://your-github-repo-url](https://your-github-repo-url)
+[https://github.com/aasthapatel10/Patel_Aastha_201_A06](https://github.com/aasthapatel10/Patel_Aastha_201_A06)
 
 :::
 
@@ -56,7 +56,7 @@ To get full credit for this Question you must:
 
 ## Screenshot/image of RStudio
 
-![](filepath.png)
+![](github_setup.PNG)
 
 :::
 
@@ -102,7 +102,9 @@ Extract the value `8162` (LeBron James points) in 2 different ways:
 - using names
 
 ```{r}
+print(player_info[[2]][[4]]) # using double bracket indexing
 
+print(player_info$LJ$points) # using names
 ```
 
 
@@ -113,6 +115,13 @@ Add a new named element to the end of each player's list called `height`. The he
 Print the `player_info` list to prove you were successful.
 
 ```{r}
+heights = c(78, 81, 78, 86, 85)
+
+for(i in 1:length(player_info)) {
+  player_info[[i]]$height = heights[i]
+} 
+
+print(player_info)
 
 ```
 
@@ -132,6 +141,20 @@ Hint: initialize an empty list
 Note: this must still run correctly even if the values were to change or if another player were added to the list or if the player order changed.
 
 ```{r}
+points_per_game = list() # initialize empty list for points_per_game
+ppg = 0 # initialize variable to hold points per game (ppg)
+
+for(i in 1:length(player_info)){
+  ppg = (player_info[[i]]$points) / (player_info[[i]]$games_played)
+  points_per_game = append(points_per_game, ppg)
+} 
+
+
+for(i in 1:length(points_per_game)){
+  names(points_per_game[[i]]) = (names(player_info[i]))
+}
+
+points_per_game
 
 ```
 
@@ -143,7 +166,12 @@ Use the list created in Part c and an appropriate apply function to round each v
 Store the output as a vector and print the results.
 
 ```{r}
+rounding = function(x){
+    round(x, 2)
+}
 
+rounded = sapply(points_per_game, rounding)
+(rounded)
 ```
 
 
