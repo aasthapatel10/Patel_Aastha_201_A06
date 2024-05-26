@@ -277,6 +277,18 @@ Run your function with 935068.
 
 ```{r}
 
+sum_dig = function(num){
+  sum = 0
+  if(num == 0){
+    return(0)
+  }else{
+    last_dig = num %% 10
+    new_num = num %/% 10
+    
+    return(last_dig + sum_dig(new_num))
+  }
+}
 
+sum_dig(935068)
 ```
 
