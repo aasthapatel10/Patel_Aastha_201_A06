@@ -275,7 +275,19 @@ Example (this is NOT the answer just an example of what goes in the {}):
 Note: This code should still run successfully even if the numbers were to change.
 
 ```{r}
+median_CO = c()
+for(i in 1:nrow(CO)){
+  median_CO = c(median_CO, apply(CO[i,3:14],1, median))
+}
 
+max_med = max(median_CO)
+max_med_year = CO$year[which.max(median_CO)]
+
+
+min_med = min(median_CO)
+min_med_year = CO$year[which.min(median_CO)]
+
+paste0("The maximum median annual temperature of ", max_med, " occurred in ", max_med_year, " and the minimum median annual temperature of ", min_med, " occurred in ", min_med_year, ".")
 ```
 
 
