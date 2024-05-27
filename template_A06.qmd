@@ -115,10 +115,10 @@ Add a new named element to the end of each player's list called `height`. The he
 Print the `player_info` list to prove you were successful.
 
 ```{r}
-heights = c(78, 81, 78, 86, 85)
+heights = c(78, 81, 78, 86, 85) # vector of heights
 
-for(i in 1:length(player_info)) {
-  player_info[[i]]$height = heights[i]
+for(i in 1:length(player_info)) { # iterate through length of player_info
+  player_info[[i]]$height = heights[i] # add new named element 'height' containing height of that player
 } 
 
 print(player_info)
@@ -144,17 +144,17 @@ Note: this must still run correctly even if the values were to change or if anot
 points_per_game = list() # initialize empty list for points_per_game
 ppg = 0 # initialize variable to hold points per game (ppg)
 
-for(i in 1:length(player_info)){
-  ppg = (player_info[[i]]$points) / (player_info[[i]]$games_played)
-  points_per_game = append(points_per_game, ppg)
+for(i in 1:length(player_info)){ # iterater through player_info length
+  ppg = (player_info[[i]]$points) / (player_info[[i]]$games_played) # calculate points per game
+  points_per_game = append(points_per_game, ppg) # append points per game to points_per_game list
 } 
 
 
-for(i in 1:length(points_per_game)){
-  names(points_per_game[[i]]) = (names(player_info[i]))
+for(i in 1:length(points_per_game)){ #iterate through length of points_per_game list
+  names(points_per_game[[i]]) = (names(player_info[i])) # assign names to the points per game values according to the player they belong to
 }
 
-points_per_game
+
 
 ```
 
@@ -166,11 +166,13 @@ Use the list created in Part c and an appropriate apply function to round each v
 Store the output as a vector and print the results.
 
 ```{r}
-rounding = function(x){
+rounding = function(x){ # create function rounding that rounds input to two decimal places
     round(x, 2)
 }
 
+# use sapply to round each value in points_per_game to two decimals and store in variable rounded
 rounded = sapply(points_per_game, rounding)
+
 (rounded)
 ```
 
@@ -193,17 +195,17 @@ ie: 91 rounds to 90; 173 rounds to 200; 1450 rounds to 1000
 Hint: use `MARGIN = 1:2` to apply the function to each value instead of only a row/col.
 
 ```{r}
-round_dig = function(x){
-  if(nchar(x) == 2 ){
+round_dig = function(x){ # create function round_dig 
+  if(nchar(x) == 2 ){ # rounds numbers with 2 digits to nearest 10s
     round(x, -1)
-  }else if(nchar(x) == 3){
+  }else if(nchar(x) == 3){ # rounds numbers with 3 digits to nearest 100s
     round(x, -2)
-  }else if(nchar(x) == 4){
+  }else if(nchar(x) == 4){ # rounds numbers with 4 digits to nearest 1000s
     round(x, -3)
   }
 }
 
-apply(mat_rand, MARGIN = 1:2, round_dig)
+apply(mat_rand, MARGIN = 1:2, round_dig) # use apply to apply round_dig to each value in mat_rand
 ```
 
 
@@ -227,12 +229,12 @@ max_temps <- read_tsv("state_max_temps.tsv") |>
 Calculate the average temperature for each month across the whole data frame (using the data for all three states together).
 
 ```{r}
-avg_temp = c()
+avg_temp = c() # intialize vector avg_temp to hold avg temps 
 
-for(i in 3:(ncol(max_temps))){
+for(i in 3:(ncol(max_temps))){ # iterate through each month column (cols 3 to 14)
+  # concatenate max temp of each month to avg_temp vector
  avg_temp = c(avg_temp, apply(max_temps[i],2, mean))
 }
-print(avg_temp)
 
 
 
@@ -250,11 +252,14 @@ Create three new data frames by slicing the data by state.
 No need to print any output here.
 
 ```{r}
-states = max_temps$state
+# slice max_temps to only include data if state's name is Colorado and store in CO
+CO = max_temps[max_temps$state == "CO", ]
 
-CO = max_temps[states == "CO", ]
-OH = max_temps[states=='OH', ]
-VA = max_temps[states=='VA', ]
+# slice max_temps to only include data if state's name is Ohio and store in OH
+OH = max_temps[max_temps$state=='OH', ]
+
+# slice max_temps to only include data if state's name is Virginia and store in VA
+VA = max_temps[max_temps$state=='VA', ]
 ```
 
 
@@ -275,17 +280,21 @@ Example (this is NOT the answer just an example of what goes in the {}):
 Note: This code should still run successfully even if the numbers were to change.
 
 ```{r}
-median_CO = c()
-for(i in 1:nrow(CO)){
+median_CO = c() # initialize vector median_CO to store median values of each year for CO
+
+for(i in 1:nrow(CO)){ # iterate through length of rows of CO
+  # use apply to find median of that row and concatenate the value to median_CO
   median_CO = c(median_CO, apply(CO[i,3:14],1, median))
 }
 
-max_med = max(median_CO)
-max_med_year = CO$year[which.max(median_CO)]
+max_med = max(median_CO) # store max median value in max_med
+
+max_med_year = CO$year[which.max(median_CO)] # store year of max median value in max_med_year
 
 
-min_med = min(median_CO)
-min_med_year = CO$year[which.min(median_CO)]
+min_med = min(median_CO) # store min median value in min_med
+
+min_med_year = CO$year[which.min(median_CO)]# store year of min median value in min_med_year
 
 paste0("The maximum median annual temperature of ", max_med, " occurred in ", max_med_year, " and the minimum median annual temperature of ", min_med, " occurred in ", min_med_year, ".")
 ```
@@ -301,18 +310,19 @@ Run your function with 935068.
 
 ```{r}
 
-sum_dig = function(num){
-  sum = 0
-  if(num == 0){
+sum_dig = function(num){ # create function that takes one input
+  
+  if(num == 0){ # base case: if num is 0, return 0
     return(0)
-  }else{
-    last_dig = num %% 10
-    new_num = num %/% 10
+  }else{ # otherwise
+    last_dig = num %% 10 # store last digit of num in last_dig
     
-    return(last_dig + sum_dig(new_num))
+    new_num = num %/% 10 # store new number without the last digit in new_num
+    
+    return(last_dig + sum_dig(new_num)) # return the sum of the digits
   }
 }
 
-sum_dig(935068)
+sum_dig(935068) # try sum_dig() on 935068
 ```
 
